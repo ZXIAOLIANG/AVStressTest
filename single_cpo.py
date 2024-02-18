@@ -20,8 +20,6 @@ from torch.distributions.categorical import Categorical
 from torch.utils.tensorboard import SummaryWriter
 from gym_wrapper import AutoResetWrapper
 from util import *
-from conjugate_gradient import cg
-from cost import cost_function
 
 n_attackers = 4
 EPS = 1e-8
@@ -30,7 +28,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--exp-name", type=str, default=os.path.basename(__file__).rstrip(".py"),
         help="the name of this experiment")
-    parser.add_argument("--env-name", type=str, default="highway-perfect-target-fast-v0",
+    parser.add_argument("--env-name", type=str, default="highway-centralized-perfect-target-fast-v0",
         help="the name of this experiment")
     parser.add_argument("--learning-rate", type=float, default=2.5e-4,
         help="the learning rate of the optimizer")

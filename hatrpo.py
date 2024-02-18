@@ -20,8 +20,6 @@ from torch.distributions.categorical import Categorical
 from torch.utils.tensorboard import SummaryWriter
 from gym_wrapper import MultiAgentAutoResetWrapper
 from util import *
-from conjugate_gradient import cg
-from cost import cost_function
 
 n_attackers = 4
 EPS = 1e-8
@@ -113,7 +111,7 @@ def config_env():
                    "attacker_collide_each_other_reward": -2.5,	
                    "vicitm_collision_reward": 10.0/n_attackers,	
                    "randomize_starting_position": False,
-                   "constraint_env": True,
+                   "constraint_env": False,
                    "vis": False,
                    "testing": False,
                    "victim_lane_id": 1})
@@ -202,7 +200,7 @@ if __name__ == "__main__":
     torch.manual_seed(args.seed)
     torch.backends.cudnn.deterministic = args.torch_deterministic
 
-    device = torch.device(args.device)
+    device = torch.device("cuda" if torch.cuda.is_available() and args.cuda else "cpu")
 
     envs = config_env()
     agents = []
@@ -254,6 +252,7 @@ if __name__ == "__main__":
             next_obs, reward, done, truncated, info = envs.step(tuple(actions_to_take))
             
             for i in range(n_attackers):
+                print("reward: {}".format(reward))
                 rewards[i, step] = torch.tensor(reward[i]).to(device).view(-1)
             next_obs, next_done = torch.Tensor(next_obs).to(device), torch.Tensor(done).to(device)
             

@@ -28,7 +28,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--exp-name", type=str, default=os.path.basename(__file__).rstrip(".py"),
         help="the name of this experiment")
-    parser.add_argument("--env-name", type=str, default="highway-perfect-target-fast-v0",
+    parser.add_argument("--env-name", type=str, default="highway-centralized-perfect-target-fast-v0",
         help="the name of this experiment")
     parser.add_argument("--learning-rate", type=float, default=2.5e-4,
         help="the learning rate of the optimizer")
@@ -107,7 +107,7 @@ def config_env():
                    "time_penalty": 0.0,	
                    "close_vehicle_cost": 20,
                    "randomize_starting_position": False,
-                   "constraint_env": True,
+                   "constraint_env": False,
                    "vis": False,
                    "victim_index": 2,
                    "victim_lane_id": 1,
@@ -197,7 +197,7 @@ if __name__ == "__main__":
     torch.manual_seed(args.seed)
     torch.backends.cudnn.deterministic = args.torch_deterministic
 
-    device = torch.device(args.device)
+    device = torch.device("cuda" if torch.cuda.is_available() and args.cuda else "cpu")
 
     
     envs = config_env()
