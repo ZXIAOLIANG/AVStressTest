@@ -1,3 +1,0 @@
-[submodule "highway_envs"]
-	path = highway_envs
-	url = https://github.com/Farama-Foundation/HighwayEnv.git
